@@ -1,12 +1,10 @@
-import { useState } from 'react'
-import './App.css'
 
+import LowcodeEditor from "./editor";
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      
+      <LowcodeEditor></LowcodeEditor>
     </>
   )
 }
