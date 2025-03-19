@@ -25,7 +25,7 @@ interface Action {
   components: [
     {
       id: 1,
-      name: "page",
+      name: "Page",
       props: {},
       desc: "页面",
     },
