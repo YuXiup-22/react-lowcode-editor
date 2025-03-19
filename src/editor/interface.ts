@@ -1,0 +1,7 @@
+import { PropsWithChildren } from "react";
+
+export interface componentCommonProps extends PropsWithChildren{
+    id:number,
+    name:'string',
+    [key:string]:any
+}

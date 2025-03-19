@@ -99,6 +99,7 @@ function getComponentById(
   return null;
 }
 export {
-  useComponentStore
+  useComponentStore,
+  getComponentById
 };
 export type { Component };
