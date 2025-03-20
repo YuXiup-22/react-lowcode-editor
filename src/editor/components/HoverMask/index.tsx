@@ -55,10 +55,10 @@ export default function HoverMask({
     const el = document.querySelector(`.${portalWrapperClassName}`)
     return el;
   }, []);
+  const {components} = useComponentStore()
   useEffect(() => {
     updatePosition();
-  }, [componentId]);
-  const {components} = useComponentStore()
+  }, [componentId,components]);
   const curComponent = useMemo(()=>{
     return getComponentById(componentId,components)
   },[componentId])
@@ -100,7 +100,7 @@ export default function HoverMask({
                 whiteSpace:'nowrap'
             }}
         >
-            {curComponent?.name}
+            {curComponent?.desc}
         </div>
     </div>
     </>,

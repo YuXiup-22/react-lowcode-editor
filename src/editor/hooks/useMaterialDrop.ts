@@ -11,12 +11,13 @@ export function useMaterialDrop(accept: string[], id: number) {
       const didDrop = monitor.didDrop();
       if (didDrop) return;
       // 传递进来的组件，然后渲染
-      const props = componentConfig[item.type].defaultProps;
+      const config = componentConfig[item.type];
       addComponent(
         {
           id: new Date().getTime(),
           name: item.type,
-          props,
+          props:config.defaultProps,
+          desc:config.desc
         },
         id
       );

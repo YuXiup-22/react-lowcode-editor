@@ -6,8 +6,9 @@ export default function Material() {
     const components = useMemo(()=>{
         return Object.values(componentConfig)
     },[componentConfig])
-    return <div>{ components.map((component,index)=>{
-        return <MaterialItem name={component.name} key={component.name+index}></MaterialItem>
+    console.log(components)
+    return <div>{ components.filter(item=>item.name!=='Page').map((component,index)=>{
+        return <MaterialItem name={component.name} desc={component.desc} key={component.name+index}></MaterialItem>
     })
 }</div>
 }
