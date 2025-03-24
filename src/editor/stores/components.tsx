@@ -1,6 +1,7 @@
 /**
  * 保存全局的json
  */
+import { CSSProperties } from "react";
 import { create } from "zustand";
 
 interface Component {
@@ -10,6 +11,7 @@ interface Component {
   desc:string;
   children?: Component[];
   parentId?: number;
+  style?:CSSProperties
 }
 
 interface State {
@@ -23,6 +25,7 @@ interface Action {
   deleteComponent: (componentId: number) => void;
   updateComponentProps: (componentId: number, props: any) => void;
   setCurComponentId: (componentId: number|null) => void;
+  updateComponentStyle:(componentId:number,style:CSSProperties)=>void
 }
 
 const useComponentStore = create<State & Action>((set, get) => ({
@@ -93,6 +96,18 @@ const useComponentStore = create<State & Action>((set, get) => ({
       curComponentId: componentId,
       curComponent: getComponentById(componentId, state.components),
     })),
+    updateComponentStyle:(componentId, style)=> set(state=>{
+      const component = getComponentById(componentId, state.components);
+      if(component){
+        component.style = {...component.style,...style}
+        return {
+          components:[...state.components]
+        }
+      }
+      return {
+        components:[...state.components]
+      }
+    }),
 }));
 
 function getComponentById(

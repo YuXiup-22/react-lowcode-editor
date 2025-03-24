@@ -1,4 +1,4 @@
-export default function Header(params:type) {
+export default function Header() {
     return <div>header</div>
     
 }

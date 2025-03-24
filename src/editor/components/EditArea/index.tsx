@@ -21,6 +21,8 @@ export default function EditorArea() {
           name: component.name,
           ...config.defaultProps,
           ...component.props,
+          style: component?.style,
+
         },
         renderComponent(component.children || [])
       );

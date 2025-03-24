@@ -17,7 +17,10 @@ export function useMaterialDrop(accept: string[], id: number) {
           id: new Date().getTime(),
           name: item.type,
           props:config.defaultProps,
-          desc:config.desc
+          desc:config.desc,
+          style:{
+            backgroundColor:'red',
+          }
         },
         id
       );
