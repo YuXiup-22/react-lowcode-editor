@@ -25,7 +25,7 @@ interface Action {
   deleteComponent: (componentId: number) => void;
   updateComponentProps: (componentId: number, props: any) => void;
   setCurComponentId: (componentId: number|null) => void;
-  updateComponentStyle:(componentId:number,style:CSSProperties)=>void
+  updateComponentStyle:(componentId:number,style:CSSProperties,replace?:boolean)=>void
 }
 
 const useComponentStore = create<State & Action>((set, get) => ({
@@ -96,10 +96,10 @@ const useComponentStore = create<State & Action>((set, get) => ({
       curComponentId: componentId,
       curComponent: getComponentById(componentId, state.components),
     })),
-    updateComponentStyle:(componentId, style)=> set(state=>{
+    updateComponentStyle:(componentId, style,replace?:boolean)=> set(state=>{
       const component = getComponentById(componentId, state.components);
       if(component){
-        component.style = {...component.style,...style}
+        component.style =replace?{...style}:{...component.style,...style}
         return {
           components:[...state.components]
         }

@@ -60,10 +60,12 @@ export default function ClickMask({
   },[])
   useEffect(() => {
     updatePosition();
-  }, [componentId,components]);
-  // useEffect(() => {
-  //   updatePosition();
-  // }, [components]);
+  }, [componentId]);
+  useEffect(() => {
+    setTimeout(()=>{
+      updatePosition()
+    },200)
+  }, [components]);
   //   创建一个挂载的容器
   const el = useMemo(() => {
     const el = document.querySelector(`.${portalWrapperClassName}`);
