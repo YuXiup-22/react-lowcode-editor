@@ -4,10 +4,12 @@
  */
 
 import { create } from "zustand"
-import Container from "../materials/Container"
-import Button from "../materials/Button"
-import Page from "../materials/Page"
-
+import Container from "../materials/Container/dev"
+import Button from "../materials/Button/dev"
+import Page from "../materials/Page/dev"
+import ContainerProd from "../materials/Container/prod";
+import ButtonProd from "../materials/Button/prod";
+import PageProd from "../materials/Page/prod";
 // 可配置的属性
 export interface ComponentSetter{
     name:string,
@@ -21,7 +23,9 @@ export interface ComponentConfig{
     component:any,
     desc:string,
     setter?:ComponentSetter[]
-    styleSetter?:ComponentSetter[]
+    styleSetter?:ComponentSetter[],
+    dev:any,
+    prod:any
 }
 
 interface State{
@@ -42,7 +46,9 @@ export const useComponentConfigStore = create<State&Action>((set)=>(
                 name:'Container',
                 defaultProps:{},
                 component:Container,
-                desc:'容器'
+                desc:'容器',
+                dev:Container,
+                prod:ContainerProd
             },
             Button:{
                 name:'Button',
@@ -83,13 +89,17 @@ export const useComponentConfigStore = create<State&Action>((set)=>(
                         label:'高度',
                         type:'inputNumber'
                     }
-                ]
+                ],
+                dev:Button,
+                prod:ButtonProd
             },
             Page:{
                 name:'Page',
                 defaultProps:{},
                 component:Page,
-                desc:'页面'
+                desc:'页面',
+                dev:Page,
+                prod:PageProd
             }
         },
         registerComponent:(name,compopentConfig)=>set(state=>{

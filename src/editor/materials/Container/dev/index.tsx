@@ -1,5 +1,5 @@
-import { useMaterialDrop } from "../../hooks/useMaterialDrop";
-import { componentCommonProps } from "../../interface";
+import { useMaterialDrop } from "../../../hooks/useMaterialDrop";
+import { componentCommonProps } from "../../../interface";
 export default function Container({ children, id, name,style }: componentCommonProps) {
   const { drop, canDrop } = useMaterialDrop(["Button","Container"], id);
   return (

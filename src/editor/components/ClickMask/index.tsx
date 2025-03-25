@@ -87,7 +87,6 @@ export default function ClickMask({
     }
     return parentComponents;
   }, [curComponent]);
-  console.log(parentComponents)
   return createPortal(
     <>
       <div

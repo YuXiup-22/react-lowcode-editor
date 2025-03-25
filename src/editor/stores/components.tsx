@@ -18,6 +18,7 @@ interface State {
   components: Component[];
   curComponentId: number | null;
   curComponent: Component | null;
+  mode:'dev'|'prod'
 }
 
 interface Action {
@@ -26,6 +27,7 @@ interface Action {
   updateComponentProps: (componentId: number, props: any) => void;
   setCurComponentId: (componentId: number|null) => void;
   updateComponentStyle:(componentId:number,style:CSSProperties,replace?:boolean)=>void
+  setMode:(mode:'dev'|'prod')=>void
 }
 
 const useComponentStore = create<State & Action>((set, get) => ({
@@ -37,8 +39,10 @@ const useComponentStore = create<State & Action>((set, get) => ({
       desc: "页面",
     },
   ],
+  mode:'dev',
   curComponentId: null,
   curComponent: null,
+  setMode:(mode)=>set({mode}),
   addComponent: (component, parentId) =>
     set((state) => {
       if (parentId) {

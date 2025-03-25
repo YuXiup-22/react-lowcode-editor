@@ -11,10 +11,10 @@ export default function EditorArea() {
   function renderComponent(components: Component[]): React.ReactNode {
     return components.map((component) => {
       const config = componentConfig?.[component.name];
-      if (!config?.component) return null;
+      if (!config?.dev) return null;
 
       return React.createElement(
-        config.component,
+        config.dev,
         {
           key: component.id,
           id: component.id, //将id,name传到对应的组件

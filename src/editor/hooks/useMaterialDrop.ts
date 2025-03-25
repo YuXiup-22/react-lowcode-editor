@@ -19,7 +19,7 @@ export function useMaterialDrop(accept: string[], id: number) {
           props:config.defaultProps,
           desc:config.desc,
           style:{
-            backgroundColor:'red',
+            // backgroundColor:'red',
           }
         },
         id
