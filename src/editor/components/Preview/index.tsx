@@ -1,6 +1,7 @@
 import { useComponentStore,Component } from "../../stores/components";
 import { useComponentConfigStore } from "../../stores/component-config";
 import React from "react";
+import { message } from "antd";
 
 export default function Preview(params:type) {
     const { components } = useComponentStore()
@@ -11,11 +12,20 @@ export default function Preview(params:type) {
         componentConfig[component.name].events?.forEach(event=>{
             const eventConfig = component.props[event.name]
             if(eventConfig){
-                const {type,url} = eventConfig
+                const {type,url,config} = eventConfig
                 // 给事件绑定方法，根据事件的选中类型，执行对应的方法
                 props[event.name] = ()=>{
                     if(type === 'goToLink'&&url){
                         window.location.href = url
+                    }else if(type === 'showMessage'&&config){
+                        
+                        if(config.text&&config.type == 'success'){
+                            message.success(config.text) 
+                        }else if(config.text&&config.type == 'error'){
+                            message.error(config.text)
+                        }else {
+                            message.warning(config.text)
+                        }
                     }
                 }
             }

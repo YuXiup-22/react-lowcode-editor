@@ -1,8 +1,9 @@
-import { Collapse, CollapseProps, Select, Space,Input } from "antd";
+import { Collapse, CollapseProps, Select, Space } from "antd";
 import { useComponentConfigStore } from "../../stores/component-config";
 import { useComponentStore } from "../../stores/components";
 import GoToLink from "./actions/GoToLink";
-export default function ComponentEvent(params: type) {
+import ShowMessage from "./actions/showMessage";
+export default function ComponentEvent() {
   const { componentConfig } = useComponentConfigStore();
   const { curComponent,curComponentId,updateComponentProps } = useComponentStore();
   if (!curComponent) return null;
@@ -16,7 +17,7 @@ export default function ComponentEvent(params: type) {
   }
   const items: CollapseProps["items"] = (
     componentConfig[curComponent?.name]?.events || []
-  ).map((Item, index) => {
+  ).map((Item,) => {
     return {
       key: Item.name,
       label: Item.label,
@@ -37,6 +38,10 @@ export default function ComponentEvent(params: type) {
           {
             curComponent.props[Item.name]?.type==='goToLink'&&
             <GoToLink event={Item}></GoToLink>
+          }
+          {
+            curComponent.props[Item.name]?.type === 'showMessage'&&
+            <ShowMessage event={Item}></ShowMessage>
           }
         </div>
       ,
