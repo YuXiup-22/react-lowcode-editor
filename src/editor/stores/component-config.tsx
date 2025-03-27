@@ -10,12 +10,17 @@ import Page from "../materials/Page/dev"
 import ContainerProd from "../materials/Container/prod";
 import ButtonProd from "../materials/Button/prod";
 import PageProd from "../materials/Page/prod";
+import { last } from "lodash-es";
 // 可配置的属性
 export interface ComponentSetter{
     name:string,
     label:string,
     type:string,
     [key:string]:any
+}
+export interface ComponentEvent{
+    name:string,
+    label:string,
 }
 export interface ComponentConfig{
     name:string,
@@ -24,6 +29,7 @@ export interface ComponentConfig{
     desc:string,
     setter?:ComponentSetter[]
     styleSetter?:ComponentSetter[],
+    events?:ComponentEvent[],
     dev:any,
     prod:any
 }
@@ -88,6 +94,16 @@ export const useComponentConfigStore = create<State&Action>((set)=>(
                         name:'height',
                         label:'高度',
                         type:'inputNumber'
+                    }
+                ],
+                events:[
+                    {
+                        name:'onClick',
+                        label:'点击事件'
+                    },
+                    {
+                        name:'onDoubleClick',
+                        label:'双击事件',
                     }
                 ],
                 dev:Button,

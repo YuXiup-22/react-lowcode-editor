@@ -5,9 +5,10 @@ export default function Button({
   text,
   id,
   style,
+  ...props //绑定的方法
 }: componentCommonProps) {
   return (
-    <AntdButton  style={style} type={type}>
+    <AntdButton  style={style} type={type} {...props}>
       {text}
     </AntdButton>
   );
