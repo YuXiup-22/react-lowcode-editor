@@ -2,20 +2,21 @@ import TextArea from "antd/es/input/TextArea";
 import { ComponentEvent } from "../../../stores/component-config";
 import { useComponentStore } from "../../../stores/components";
 import { Space, Input } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 export interface GotoLinkConfig{
     type:'goToLink',
     url:string
 }
 interface GotoLinkProps{
     defaultValue?:string,
+    value?:string
     onChange:(config:GotoLinkConfig)=>void
 }
 export default function GoToLink(props: GotoLinkProps) {
-  const { defaultValue,onChange } = props;
+  const { defaultValue,onChange,value } = props;
   const {  curComponentId, } =
     useComponentStore();
-    const [url,setUrl] = useState(defaultValue||'')
+    const [url,setUrl] = useState(defaultValue)
   function urlChange( value: string) {
     if (!curComponentId) return;
     setUrl(value)
@@ -24,6 +25,9 @@ export default function GoToLink(props: GotoLinkProps) {
         url:value
     })
   }
+  useEffect(()=>{
+    setUrl(value)
+  },[value])
   return (
     <div className="pt-[10px]">
       <Space>
