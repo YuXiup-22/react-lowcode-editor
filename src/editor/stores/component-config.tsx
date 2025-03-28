@@ -10,7 +10,6 @@ import Page from "../materials/Page/dev"
 import ContainerProd from "../materials/Container/prod";
 import ButtonProd from "../materials/Button/prod";
 import PageProd from "../materials/Page/prod";
-import { last } from "lodash-es";
 // 可配置的属性
 export interface ComponentSetter{
     name:string,

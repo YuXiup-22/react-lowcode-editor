@@ -1,32 +1,44 @@
 import { Select, Space, Input } from "antd";
-import { ComponentEvent } from "../../../stores/component-config";
 import { useComponentStore } from "../../../stores/components";
+import { useState } from "react";
 
-export default function ShowMessage(props: { event: ComponentEvent }) {
-  const { event } = props;
-  const { curComponent, curComponentId, updateComponentProps } =
-    useComponentStore();
-  const handleTypeChange = (eventName: string, value: string) => {
+export interface ShowMessageConfig {
+  type: "showMessage";
+  config: {
+    type: "success" | "error" | "warning";
+    text: string;
+  };
+}
+interface ShowMessageProps {
+  value?: ShowMessageConfig["config"];
+  onChange?: (config: ShowMessageConfig) => void;
+}
+export default function ShowMessage(props: ShowMessageProps) {
+  const { value, onChange } = props;
+  const { curComponentId } = useComponentStore();
+  const [type, setType] = useState<"success" | "error" | "warning">(
+    value?.type || "success"
+  );
+  const [text, setText] = useState(value?.text || "");
+  const handleTypeChange = (value: "success" | "error" | "warning") => {
     if (!curComponentId) return;
-    updateComponentProps(curComponentId, {
-      [eventName]: {
-        ...curComponent?.props?.[eventName],
-        config: {
-          ...curComponent?.props?.[eventName]?.config,
-          type: value,
-        },
+    setType(value);
+    onChange?.({
+      type: "showMessage",
+      config: {
+        type: value,
+        text,
       },
     });
   };
-  const handleMessageChange = (eventName: string, value: string) => {
+  const handleMessageChange = (value: string) => {
     if (!curComponentId) return;
-    updateComponentProps(curComponentId, {
-      [eventName]: {
-        ...curComponent?.props?.[eventName],
-        config: {
-          ...curComponent?.props?.[eventName]?.config,
-          text: value,
-        },
+    setText(value);
+    onChange?.({
+      type: "showMessage",
+      config: {
+        type,
+        text: value,
       },
     });
   };
@@ -52,9 +64,9 @@ export default function ShowMessage(props: { event: ComponentEvent }) {
               },
             ]}
             onChange={(value) => {
-              handleTypeChange(event.name, value);
+              handleTypeChange(value);
             }}
-            value={curComponent?.props?.[event.name]?.config?.type}
+            value={type}
           ></Select>
         </Space>
       </div>
@@ -62,8 +74,9 @@ export default function ShowMessage(props: { event: ComponentEvent }) {
         <Space>
           <div>内容:</div>
           <Input
-            value={curComponent?.props[event.name]?.config?.text}
-            onChange={(e) => handleMessageChange(event.name, e.target.value)}
+            style={{ width: 500 }}
+            value={text}
+            onChange={(e) => handleMessageChange(e.target.value)}
           ></Input>
         </Space>
       </div>

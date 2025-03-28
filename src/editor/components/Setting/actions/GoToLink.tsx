@@ -1,31 +1,40 @@
+import TextArea from "antd/es/input/TextArea";
 import { ComponentEvent } from "../../../stores/component-config";
 import { useComponentStore } from "../../../stores/components";
 import { Space, Input } from "antd";
-export default function GoToLink(props: { event: ComponentEvent }) {
-  const { event } = props;
-  const { curComponent, curComponentId, updateComponentProps } =
+import { useState } from "react";
+export interface GotoLinkConfig{
+    type:'goToLink',
+    url:string
+}
+interface GotoLinkProps{
+    defaultValue?:string,
+    onChange:(config:GotoLinkConfig)=>void
+}
+export default function GoToLink(props: GotoLinkProps) {
+  const { defaultValue,onChange } = props;
+  const {  curComponentId, } =
     useComponentStore();
-
-  function urlChange(eventName: string, url: string) {
+    const [url,setUrl] = useState(defaultValue||'')
+  function urlChange( value: string) {
     if (!curComponentId) return;
-    updateComponentProps(curComponentId, {
-      [eventName]: {
-        ...curComponent?.props?.[eventName],
-        url: url,
-      },
-    });
+    setUrl(value)
+    onChange({
+        type:'goToLink',
+        url:value
+    })
   }
   return (
     <div className="pt-[10px]">
       <Space>
         <div>链接:</div>
-        <Input
-          type="text"
-          value={curComponent?.props[event.name]?.url}
-          onChange={(e) => {
-            urlChange(event.name, e.target.value);
-          }}
-        ></Input>
+        <TextArea
+        style={{height: 200, width: 500, border: '1px solid #000'}}
+        value={url}
+        onChange={(e) => {
+          urlChange( e.target.value);
+        }}
+        ></TextArea>
       </Space>
     </div>
   );

@@ -2,7 +2,8 @@ import { useComponentStore,Component } from "../../stores/components";
 import { useComponentConfigStore } from "../../stores/component-config";
 import React from "react";
 import { message } from "antd";
-
+import {ShowMessageConfig} from "../Setting/actions/showMessage";
+import { GotoLinkConfig } from "../Setting/actions/GoToLink";
 export default function Preview(params:type) {
     const { components } = useComponentStore()
     const { componentConfig  } = useComponentConfigStore()
@@ -12,21 +13,23 @@ export default function Preview(params:type) {
         componentConfig[component.name].events?.forEach(event=>{
             const eventConfig = component.props[event.name]
             if(eventConfig){
-                const {type,url,config} = eventConfig
                 // 给事件绑定方法，根据事件的选中类型，执行对应的方法
                 props[event.name] = ()=>{
-                    if(type === 'goToLink'&&url){
-                        window.location.href = url
-                    }else if(type === 'showMessage'&&config){
-                        
-                        if(config.text&&config.type == 'success'){
-                            message.success(config.text) 
-                        }else if(config.text&&config.type == 'error'){
-                            message.error(config.text)
-                        }else {
-                            message.warning(config.text)
+                    eventConfig?.actions.map((action:ShowMessageConfig|GotoLinkConfig)=>{
+                        if(action.type === 'goToLink'&&action.url){
+                            window.location.href = action.url
+                        }else if(action.type === 'showMessage'&&action.config){
+                            
+                            if(action.config.text&&action.config.type == 'success'){
+                                message.success(action.config.text) 
+                            }else if(action.config.text&&action.config.type == 'error'){
+                                message.error(action.config.text)
+                            }else if(action.config.text&&action.config.type == 'warning'){
+                                message.warning(action.config.text)
+                            }
                         }
-                    }
+                    })
+                    
                 }
             }
         })
