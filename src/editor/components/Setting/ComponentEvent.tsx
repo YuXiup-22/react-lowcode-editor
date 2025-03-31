@@ -8,17 +8,17 @@ import { ShowMessageConfig } from "./actions/showMessage";
 import { GotoLinkConfig } from "./actions/GoToLink";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { CustomJSConfig } from "./actions/CustomJS";
+import { ComponentMethodConfig } from "./actions/componentMethod";
 export default function ComponentEvent() {
   const { componentConfig } = useComponentConfigStore();
   const { curComponent, curComponentId, updateComponentProps } =
     useComponentStore();
   const [actionModalOpen, setActionModalOpen] = useState(false);
   const [curEvnet, setCurEvent] = useState<ComponentEvent>();
-  const [curAction, setCurAction] = useState<ShowMessageConfig|GotoLinkConfig|CustomJSConfig>();
+  const [curAction, setCurAction] = useState<ShowMessageConfig|GotoLinkConfig|CustomJSConfig|ComponentMethodConfig>();
   const [curActionIndex,setCurActionIndex] = useState<number>(-1)
   if (!curComponent) return null;
-  function handleModalOk(config?: ShowMessageConfig | GotoLinkConfig|CustomJSConfig) {
-    debugger
+  function handleModalOk(config?: ShowMessageConfig | GotoLinkConfig|CustomJSConfig|ComponentMethodConfig) {
     if (!curComponentId||!curEvnet) return;
     if(curActionIndex!==-1){
         updateComponentProps(curComponentId,{
@@ -50,7 +50,7 @@ export default function ComponentEvent() {
         }
     })
   }
-  function editAction(config:ShowMessageConfig|GotoLinkConfig|CustomJSConfig,index:number,Item:ComponentEvent) {
+  function editAction(config:ShowMessageConfig|GotoLinkConfig|CustomJSConfig|ComponentMethodConfig,index:number,Item:ComponentEvent) {
     setCurActionIndex(index)
     setCurAction(config)
     setCurEvent(Item)
@@ -80,7 +80,7 @@ export default function ComponentEvent() {
       children: (
         <div>
           {
-            curComponent.props[Item.name]?.actions.map((config:ShowMessageConfig|GotoLinkConfig|CustomJSConfig, index:number) => {
+            curComponent.props[Item.name]?.actions.map((config:ShowMessageConfig|GotoLinkConfig|CustomJSConfig|ComponentMethodConfig, index:number) => {
               return (
                 <div>
                   {
@@ -115,6 +115,19 @@ export default function ComponentEvent() {
                     
                     </div>
                   }
+                  {
+                    config.type === 'componentMethod'&&<div className="border border-[#aaa] px-[10px] m-[10px]">
+                    <div className="text-[blue] flex justify-between">组件方法
+                    <EditOutlined style={{color:'black'}} onClick={()=>editAction(config,index,Item)}></EditOutlined>
+
+                    <DeleteOutlined style={{color:'black'}} onClick={()=>deleteAction(Item.name,index)}></DeleteOutlined>
+
+                    </div>
+                    <div>{config.config.componentId}</div>
+                    <div>{config.config.method}</div>
+                    </div>
+                  }
+                  
                 </div>
               );
             })

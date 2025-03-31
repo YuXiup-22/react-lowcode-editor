@@ -1,13 +1,16 @@
 import { useComponentStore, Component } from "../../stores/components";
 import { useComponentConfigStore } from "../../stores/component-config";
-import React from "react";
+import React, { useRef } from "react";
 import { message } from "antd";
 import ShowMessage, { ShowMessageConfig } from "../Setting/actions/showMessage";
 import { GotoLinkConfig } from "../Setting/actions/GoToLink";
 import { CustomJSConfig } from "../Setting/actions/CustomJS";
+import { ComponentMethodConfig } from "../Setting/actions/componentMethod";
 export default function Preview(params: type) {
   const { components } = useComponentStore();
   const { componentConfig } = useComponentConfigStore();
+  const componentRefs = useRef<Record<string,any>>({})
+
   // 统一处理事件
   function handleEvent(component: Component) {
     const props: Record<string, any> = {};
@@ -17,7 +20,7 @@ export default function Preview(params: type) {
         // 给事件绑定方法，根据事件的选中类型，执行对应的方法
         props[event.name] = () => {
           eventConfig?.actions.map(
-            (action: ShowMessageConfig | GotoLinkConfig | CustomJSConfig) => {
+            (action: ShowMessageConfig | GotoLinkConfig | CustomJSConfig|ComponentMethodConfig) => {
               if (action.type === "goToLink" && action.url) {
                 window.location.href = action.url;
               } else if (action.type === "showMessage" && action.config) {
@@ -44,6 +47,12 @@ export default function Preview(params: type) {
                         message.success(content)
                     }
                 });
+              } else if (action.type === "componentMethod" && action.config) {
+                // 收集执行动作组件的ref
+                const component = componentRefs.current[action.config.componentId]
+                if(component){
+                  component[action.config.method]?.()
+                }
               }
             }
           );
@@ -59,6 +68,7 @@ export default function Preview(params: type) {
       return React.createElement(
         config.prod,
         {
+          ref:(ref:Record<string,any>)=>{componentRefs.current[component.id] = ref},
           key: component.id,
           id: component.id, //将id,name传到对应的组件
           name: component.name,
