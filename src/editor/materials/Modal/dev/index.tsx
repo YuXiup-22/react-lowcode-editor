@@ -6,7 +6,7 @@ export default function Modal({
   title,
   children,
 }: componentCommonProps) {
-  const { canDrop, drop } = useMaterialDrop(["Button", "Container"], id);
+  const { canDrop, drop } = useMaterialDrop(["Button", "Container",'Table'], id);
 
   return (
     <div
